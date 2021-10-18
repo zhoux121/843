@@ -1,41 +1,21 @@
-I = imread("1.png");
-grayImage = rgb2gray(I);
-subplot(3,1,1),imshow(grayImage);
-
-constant = 1;
-double_value = im2double(grayImage);
-
-%log transformations  
-%log_transformations1 = constant*log(1+grayImage);
-
-%inverse log transformations
-%inverse_log_transformations = exp(double_value/0.3)-1;
-
-%power law transforamtions
-%power_law_transforamtions = 1*(double_value.^3);
-
-%power law transforamtions
-power_law_transforamtions1 = 1*(double_value.^3);
-%subplot(3,1,2),imshow((power_law_transforamtions1));
-power_law_transforamtions = 1*(double_value.^0.3);
-%subplot(3,1,3),imshow((power_law_transforamtions));
-
-% plane_image0 = bitget(grayImage,1);
-% plane_image1 = bitget(grayImage,2);
-% plane_image2 = bitget(grayImage,3);
-% plane_image3 = bitget(grayImage,4);
-% plane_image4 = bitget(grayImage,5);
-% plane_image5 = bitget(grayImage,6);
-% plane_image6 = bitget(grayImage,7);
-% plane_image7 = bitget(grayImage,8);
-% two = plane_image7*128+plane_image6*64+plane_image5*32+plane_image4*16;
-% imshow((two));
-%imhist(grayImage,64)
-
-gh = histeq(power_law_transforamtions1);
-subplot(2,2,1),imshow(power_law_transforamtions1),title("Original Image (Gray) γ = 3.0: ");
-subplot(2,2,2),imshow(gh),title("Equalized Image (Gray)  γ = 3.0:");
-subplot(2,2,3),imhist(power_law_transforamtions1),title("Histogram of Image (Gray)  γ = 3.0:");
-subplot(2,2,4),imhist(gh),title("Histogram of Equalized Image (Gray)  γ = 3.0:");
+img = imread('1.jpg');
+% subplot(4,2,1),imshow(img);
+% subplot(4,2,2),imshow(edge(rgb2gray(img),'Roberts'));
+% subplot(4,2,3),imshow(edge(rgb2gray(img),'Prewitt'));
+% subplot(4,2,4),imshow(edge(rgb2gray(img),'Sobel'));
 
 
+% % create gaussian filter
+% h = fspecial('gaussian',5,2.5);
+% % blur the image
+% blurred_img = imfilter(rgb2gray(img),h);
+% % subtract blurred image from original
+% diff_img = rgb2gray(img) - blurred_img;
+% % add difference to the original image
+% highboost_img = rgb2gray(img) + 5*diff_img;
+% unsharp_mask = rgb2gray(img) + 1*diff_img;
+% imshow(highboost_img);
+
+noise_image= imnoise(rgb2gray(img),'gaussian',1);
+K = filter2(fspecial('average',5),noise_image)/255;
+imshow(K);
